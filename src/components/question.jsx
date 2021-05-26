@@ -12,9 +12,9 @@ const Question = () => {
   const [categories, setcategories] = useState(null);
   const [subcategories, setsubcategories] = useState(null);
 
-  useEffect(() => {
-    console.log(categories, "<<< CATEGORIES");
-  })
+  useEffect(async () => {
+    await preparedData();
+  }, [])
 
   const preparedData = async () => {
     try {
@@ -28,7 +28,6 @@ const Question = () => {
   }
 
   const preCreate = async () => {
-    await preparedData();
     setstate("create");
     setitem({
       question: "",
@@ -38,8 +37,9 @@ const Question = () => {
       answer_d: "",
       correct_answer_pg: "a",
       correct_answer_essay: "",
-      category_id: 0,
-      sub_category_id: 0,
+      category_id: categories[0].id,
+      sub_category_id: subcategories[0].id,
+      image: null,
     })
   }
 
@@ -59,30 +59,32 @@ const Question = () => {
     try {
       setstate("create");
       e.preventDefault();
+
+      const formData = new FormData();
       let tempItem = {...item};
 
+      formData.set("question", tempItem.question);
+      formData.set("category_id", tempItem.category_id);
+      formData.set("sub_category_id", tempItem.sub_category_id);
+
       if (questiontype === "pg") {
-        delete tempItem.id;
-        delete tempItem.created_at;
-        delete tempItem.updated_at;
-        delete tempItem.correct_answer_essay;
+        formData.set("answer_a", tempItem.answer_a);
+        formData.set("answer_b", tempItem.answer_b);
+        formData.set("answer_c", tempItem.answer_c);
+        formData.set("answer_d", tempItem.answer_d);
+        formData.set("correct_answer_pg", tempItem.correct_answer_pg.toLowerCase());
         tempItem.correct_answer_pg = tempItem.correct_answer_pg.toLowerCase();
       } else {
-        delete tempItem.id;
-        delete tempItem.answer_a;
-        delete tempItem.answer_b;
-        delete tempItem.answer_c;
-        delete tempItem.answer_d;
-        delete tempItem.created_at;
-        delete tempItem.updated_at;
-        delete tempItem.correct_answer_pg;
+        formData.set("correct_answer_essay", tempItem.correct_answer_essay);
       }
 
       if (!item.image) {
         delete tempItem.image;
+      } else {
+        formData.append("image", tempItem.image[0]);
       }
 
-      await axios.post("http://localhost:5000/questions", tempItem);
+      await axios.post("http://localhost:5000/questions", formData);
       getItems();
     } catch (error) {
       if (error.response.status === 400) {
@@ -107,30 +109,35 @@ const Question = () => {
     try {
       setstate("update");
       const itemId = Number(item.id);
+      const formData = new FormData();
       let tempItem = {...item};
 
-      if (item.correct_answer_pg) {
-        delete tempItem.id;
-        delete tempItem.created_at;
-        delete tempItem.updated_at;
-        delete tempItem.correct_answer_essay;
+      formData.set("question", tempItem.question);
+      formData.set("category_id", tempItem.category_id);
+      formData.set("sub_category_id", tempItem.sub_category_id);
+
+      if (questiontype === "pg") {
+        formData.set("answer_a", tempItem.answer_a);
+        formData.set("answer_b", tempItem.answer_b);
+        formData.set("answer_c", tempItem.answer_c);
+        formData.set("answer_d", tempItem.answer_d);
+        formData.set("correct_answer_pg", tempItem.correct_answer_pg.toLowerCase());
         tempItem.correct_answer_pg = tempItem.correct_answer_pg.toLowerCase();
       } else {
-        delete tempItem.id;
-        delete tempItem.answer_a;
-        delete tempItem.answer_b;
-        delete tempItem.answer_c;
-        delete tempItem.answer_d;
-        delete tempItem.created_at;
-        delete tempItem.updated_at;
-        delete tempItem.correct_answer_pg;
+        formData.set("correct_answer_essay", tempItem.correct_answer_essay);
       }
 
       if (!item.image) {
         delete tempItem.image;
+      } else {
+        formData.append("image", tempItem.image[0]);
       }
 
-      await axios.patch("http://localhost:5000/questions/" + itemId, tempItem);
+      await axios.patch("http://localhost:5000/questions/" + itemId, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       getItems();
       setitem(null);
     } catch (error) {
@@ -174,6 +181,18 @@ const Question = () => {
         item.correct_answer_pg ? (
           <form action="">
             <br/>
+            <label htmlFor="question">Category: </label> <br/>
+            <select name="" id="" value={item.category_id} onChange={(e) => handleChange("category_id", e.target.value)}>
+              {(categories && categories.length > 0) ? categories.map(category => {
+                  return <option key={category.id} value={category.id}>{category.name}</option>  
+              }) : null}
+            </select> <br/>
+            <label htmlFor="question">Sub Category: </label> <br/>
+            <select name="" id="" value={item.sub_category_id} onChange={(e) => handleChange("sub_category_id", e.target.value)}>
+            {(subcategories && subcategories.length > 0) ? subcategories.map(subcategory => {
+                  return <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>  
+              }) : null}
+            </select> <br/> <br/>
             <label htmlFor="question">Question : </label> <br/>
             <input type="text" name="question" value={item.question} maxLength={10} required={true} onChange={(e) => handleChange("question", e.target.value)}/> <br/>
             <label htmlFor="answer_a">Answer A : </label> <br/>
@@ -191,14 +210,30 @@ const Question = () => {
               <option value="c">C</option>
               <option value="d">D</option>
             </select>
+            <label htmlFor="image">Image : </label> <br/>
+            <input type="file" name="image" onChange={(e) => handleChange("image", e.target.files)}/> <br/>
           </form>
         ) : (
           <form action="">
             <br/>
+            <label htmlFor="question">Category: </label> <br/>
+            <select name="" id="" value={item.category_id} onChange={(e) => handleChange("category_id", e.target.value)}>
+              {(categories && categories.length > 0) ? categories.map(category => {
+                  return <option key={category.id} value={category.id}>{category.name}</option>  
+              }) : null}
+            </select> <br/>
+            <label htmlFor="question">Sub Category: </label> <br/>
+            <select name="" id="" value={item.sub_category_id} onChange={(e) => handleChange("sub_category_id", e.target.value)}>
+            {(subcategories && subcategories.length > 0) ? subcategories.map(subcategory => {
+                  return <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>  
+              }) : null}
+            </select> <br/> <br/>
             <label htmlFor="question">Question : </label> <br/>
             <input type="text" name="question" value={item.question} maxLength={10} required={true} onChange={(e) => handleChange("question", e.target.value)}/> <br/>
             <label htmlFor="answer">Answer : </label> <br/>
             <input type="text" name="answer" value={item.correct_answer_essay} required={true} onChange={(e) => handleChange("correct_answer_essay", e.target.value)}/> <br/>
+            <label htmlFor="image">Image : </label> <br/>
+            <input type="file" name="image" onChange={(e) => handleChange("image", e.target.files)}/> <br/>
           </form>
         )
       ) : null}
@@ -249,6 +284,8 @@ const Question = () => {
               <input type="text" name="answer" value={item.correct_answer_essay} maxLength={10} required={true} onChange={(e) => handleChange("correct_answer_essay", e.target.value)}/> <br/>
             </>
           )}
+          <label htmlFor="image">Image : </label> <br/>
+          <input type="file" name="image" onChange={(e) => handleChange("image", e.target.files)}/> <br/>
           <button>Save</button>
         </form>
       ) : null}
