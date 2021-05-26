@@ -189,18 +189,16 @@ const Question = () => {
             <option value="essay">ESSAY</option>
           </select> <br/>
           <label htmlFor="question">Category: </label> <br/>
-          {(categories && categories.length > 0) ? categories.forEach(category => {
-                return <p>{category.name}</p>
-          }) : null}
           <select name="correct_answer_pg" id="" value={questiontype} onChange={(e) => setquestiontype(e.target.value)}>
-            {(categories && categories.length > 0) ? categories.forEach(category => {
+            {(categories && categories.length > 0) ? categories.map(category => {
                 return <option key={category.id} value={category.id}>{category.name}</option>  
             }) : null}
           </select> <br/>
           <label htmlFor="question">Sub Category: </label> <br/>
           <select name="correct_answer_pg" id="" value={questiontype} onChange={(e) => setquestiontype(e.target.value)}>
-            <option value="pg">PG</option>
-            <option value="essay">ESSAY</option>
+          {(subcategories && subcategories.length > 0) ? subcategories.map(subcategory => {
+                return <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>  
+            }) : null}
           </select> <br/> <br/>
           <label htmlFor="question">Question : </label> <br/>
           <input type="text" name="question" value={item.question} maxLength={10} required={true} onChange={(e) => handleChange("question", e.target.value)}/> <br/>
