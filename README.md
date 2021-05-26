@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+**eureka-educate-fe** is a very simple front end application for testing purposes of [eureka-educate](https://github.com/rifanid98/eureka-educate) back end api endpoint. Built with [React.js](https://reactjs.org/) which has [features](#features).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## :memo: Table Of Content
 
-## Available Scripts
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Features](#features)
+- [Examples](#examples)
+- [Built wtih](#features)
+- [Author](#author)
+- [License](#license)
 
-In the project directory, you can run:
+## Prerequisites
 
-### `yarn start`
+- NPM or Yarn as package manager.
+- Node.js installed on the local machine
+- [eureka-educate](https://github.com/rifanid98/eureka-educate) started on the local machine
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Clone this repository:
+   `git clone https://github.com/rifanid98/eureka-educate-fe`
+2. Start the project:
+   - Open root project folder with command line (terminal, linux. cmd, windows. etc.)
+   - Type and run this command `npm install` or `yarn install` to install required dependencies.
+   - Type and run this command `npm run start` or `yarn start` to start project.
+   - Make sure there are no other processes that use port 3000
+3. Run app with api testing tools like postman, etc. on http://localhost:3000/eureka-educate-fe/
 
-### `yarn test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [x] CRUD of categories, subcategories and questions
+- [x] CORS allowed
 
-### `yarn build`
+## Documentation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- [How to use](https://github.com/rifanid98/eureka-educate-fe/blob/master/docs.md) -->
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Built with
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [Node.js](http://nodejs.org/) - JavaScript runtime environment
+- [React.js](https://reactjs.org/) - React.js library
 
-### `yarn eject`
+## Author
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [Adnin Rifandi Sutanto Putra](https://www.linkedin.com/in/adnin-rifandi/)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## License
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/rifanid98/eureka-educate-fe/blob/master/LICENSE) file for details
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thanks to [Daniel Saputra](https://www.linkedin.com/in/danielwetan/) for the readme layout.
