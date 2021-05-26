@@ -59,7 +59,30 @@ const Question = () => {
     try {
       setstate("create");
       e.preventDefault();
-      await axios.post("http://localhost:5000/questions", item);
+      let tempItem = {...item};
+
+      if (questiontype === "pg") {
+        delete tempItem.id;
+        delete tempItem.created_at;
+        delete tempItem.updated_at;
+        delete tempItem.correct_answer_essay;
+        tempItem.correct_answer_pg = tempItem.correct_answer_pg.toLowerCase();
+      } else {
+        delete tempItem.id;
+        delete tempItem.answer_a;
+        delete tempItem.answer_b;
+        delete tempItem.answer_c;
+        delete tempItem.answer_d;
+        delete tempItem.created_at;
+        delete tempItem.updated_at;
+        delete tempItem.correct_answer_pg;
+      }
+
+      if (!item.image) {
+        delete tempItem.image;
+      }
+
+      await axios.post("http://localhost:5000/questions", tempItem);
       getItems();
     } catch (error) {
       if (error.response.status === 400) {
@@ -189,13 +212,13 @@ const Question = () => {
             <option value="essay">ESSAY</option>
           </select> <br/>
           <label htmlFor="question">Category: </label> <br/>
-          <select name="correct_answer_pg" id="" value={questiontype} onChange={(e) => setquestiontype(e.target.value)}>
+          <select name="" id="" value={item.category_id} onChange={(e) => handleChange("category_id", e.target.value)}>
             {(categories && categories.length > 0) ? categories.map(category => {
                 return <option key={category.id} value={category.id}>{category.name}</option>  
             }) : null}
           </select> <br/>
           <label htmlFor="question">Sub Category: </label> <br/>
-          <select name="correct_answer_pg" id="" value={questiontype} onChange={(e) => setquestiontype(e.target.value)}>
+          <select name="" id="" value={item.sub_category_id} onChange={(e) => handleChange("sub_category_id", e.target.value)}>
           {(subcategories && subcategories.length > 0) ? subcategories.map(subcategory => {
                 return <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>  
             }) : null}
